@@ -140,7 +140,7 @@ class GoogleLogin(object):
             grant_type='authorization_code',
             client_id=self.client_id,
             client_secret=self.client_secret,
-        )).json
+        )).json()
         if not token or token.get('error'):
             abort(400)
         return token
@@ -148,7 +148,7 @@ class GoogleLogin(object):
     def get_userinfo(self, access_token):
         userinfo = requests.get(GOOGLE_OAUTH2_USERINFO_URL, params=dict(
             access_token=access_token,
-        )).json
+        )).json()
         if not userinfo or userinfo.get('error'):
             abort(400)
         return userinfo
@@ -179,6 +179,10 @@ class GoogleLogin(object):
         @wraps(view_func)
         def decorated(*args, **kwargs):
             params = {}
+
+            if 'error' in request.args:  # Access denied!
+                params.update(token={}, userinfo={})
+                return view_func(**params)
 
             # Check sig
             if 'state' in request.args:
