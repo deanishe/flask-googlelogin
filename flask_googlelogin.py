@@ -181,7 +181,8 @@ class GoogleLogin(object):
             params = {}
 
             if 'error' in request.args:  # Access denied!
-                params.update(token={}, userinfo={})
+                params.update(token={}, userinfo={},
+                              error=requests.args['error'])
                 return view_func(**params)
 
             # Check sig
