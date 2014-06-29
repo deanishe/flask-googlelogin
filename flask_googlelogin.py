@@ -35,7 +35,10 @@ class GoogleLogin(object):
             self._app = app
             self.init_app(app)
 
-        self.login_url_params = login_url_params or {}
+        self.login_url_params = {'access_type': 'online',
+                                 'response_type': 'online'}
+        if login_url_params:
+            self.login_url_params.update(login_url_params)
 
     def init_app(self, app, add_context_processor=True, login_manager=None):
         """
@@ -105,8 +108,6 @@ class GoogleLogin(object):
         redirect_uri: string
         login_hint: string
         """
-        kwargs.setdefault('response_type', 'code')
-        kwargs.setdefault('access_type', 'online')
         for key, val in self.login_url_params.items():
             kwargs.setdefault(key, val)
 
