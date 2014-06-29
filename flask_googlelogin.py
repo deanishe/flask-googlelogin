@@ -65,7 +65,7 @@ class GoogleLogin(object):
 
     @property
     def scopes(self):
-        return self.app.config.get('GOOGLE_LOGIN_SCOPES', '')
+        return self.app.config.get('GOOGLE_LOGIN_SCOPES', [])
 
     @property
     def client_id(self):
@@ -109,7 +109,7 @@ class GoogleLogin(object):
         if 'prompt' not in kwargs:
             kwargs.setdefault('approval_prompt', 'auto')
 
-        scopes = kwargs.pop('scopes', self.scopes.split(','))
+        scopes = kwargs.pop('scopes', self.scopes)
         if USERINFO_PROFILE_SCOPE not in scopes:
             scopes.append(USERINFO_PROFILE_SCOPE)
 
