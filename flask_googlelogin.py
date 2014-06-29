@@ -25,7 +25,7 @@ class GoogleLogin(object):
     Main extension class
     """
 
-    def __init__(self, app=None, login_manager=None):
+    def __init__(self, app=None, login_manager=None, login_url_params=None):
         if login_manager:
             self.login_manager = login_manager
         else:
@@ -34,6 +34,8 @@ class GoogleLogin(object):
         if app:
             self._app = app
             self.init_app(app)
+
+        self.login_url_params = login_url_params or {}
 
     def init_app(self, app, add_context_processor=True, login_manager=None):
         """
@@ -105,6 +107,8 @@ class GoogleLogin(object):
         """
         kwargs.setdefault('response_type', 'code')
         kwargs.setdefault('access_type', 'online')
+        for key, val in self.login_url_params.items():
+            kwargs.setdefault(key, val)
 
         if 'prompt' not in kwargs:
             kwargs.setdefault('approval_prompt', 'auto')
