@@ -132,7 +132,8 @@ class GoogleLogin(object):
         """
         Redirect to login url with next param set as request.url
         """
-        return redirect(self.login_url(params=dict(next=request.url)))
+        params = self.login_url_params.update(next=request.url)
+        return redirect(self.login_url(params))
 
     def exchange_code(self, code, redirect_uri):
         """
