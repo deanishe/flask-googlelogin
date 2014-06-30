@@ -36,7 +36,7 @@ class GoogleLogin(object):
             self.init_app(app)
 
         self.login_url_params = {'access_type': 'online',
-                                 'response_type': 'online'}
+                                 'response_type': 'code'}
         if login_url_params:
             self.login_url_params.update(login_url_params)
 
